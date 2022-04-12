@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Photo Gallery</title>
+    <title>CyList</title>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,700,500,300,300italic' rel='stylesheet'
         type='text/css'>
@@ -26,39 +26,38 @@
                 <br>
                 <center>
                     <h2>CyList</h2>
-                    <br>
                     {% if session["user_id"] %}
                     <h4> Hello, {{username}} </h4>
- 
+
                     <a href="/">Home</a> | <a href="/add">Add Post</a> | <a href="/logout">Logout</a><br><br>
-                    
+
                     {% else %}
-                    
+
                     <a href="/">Home</a> | <a href="/login">Login / Sign up</a> <br><br>
-                    
+
                     {% endif %}
                     <!-- <a href="/">Home</a> | <a href="/add">Add Post</a> | <a href="/login">Login</a> | <a href="/logout">Logout</a><br><br> -->
                     <div class="container">
-                        
+
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-offset-2 col-md-8">
                                 <div class="blog-grid-content">
                                     <form method='get' action="/search">
                                         <input type="text" name="query" id="query" class="form-control"
-                                            placeholder="Search posts">
+                                            placeholder="Search all posts">
                                 </div>
                             </div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-offset-1 col-md-2">
                                 <h4 class="">For Sale</h4>
                                 <span class="">
                                     <a href="/posts?category=cars">Cars</a><br>
-                                    <a href="/posts?category=">Motorcycles</a><br>
-                                    <a href="/posts?category=">Boats</a><br>
-                                    <a href="/posts?category=">Books</a><br>
-                                    <a href="/posts?category=">Furniture</a><br>
+                                    <a href="/posts?category=motorcycles">Motorcycles</a><br>
+                                    <a href="/posts?category=boats">Boats</a><br>
+                                    <a href="/posts?category=books">Books</a><br>
+                                    <a href="/posts?category=furniture">Furniture</a><br>
                                     </ul>
                                 </span>
                             </div>
@@ -66,47 +65,47 @@
                             <div class="col-md-2">
                                 <h4 class="">Housing </h4>
                                 <span class="">
-                                    <a href="/posts?category=cars">House</a><br>
-                                    <a href="/posts?category=">Apartment</a><br>
-                                    <a href="/posts?category=">Condo</a><br>
-                                    <a href="/posts?category=">Hotel </a><br>
-                                    <a href="/posts?category=">Vacation Rental</a><br>                                 </a><br>
+                                    <a href="/posts?category=house">House</a><br>
+                                    <a href="/posts?category=apartment">Apartment</a><br>
+                                    <a href="/posts?category=condo">Condo</a><br>
+                                    <a href="/posts?category=hotel">Hotel </a><br>
+                                    <a href="/posts?category=vacation">Vacation Rental</a><br> </a><br>
                                     </ul>
                                 </span>
                             </div>
-                            
+
                             <div class="col-md-2">
                                 <h4 class="">Services </h4>
                                 <span class="">
-                                    <a href="/posts?category=cars">Cleaning </a><br>
-                                    <a href="/posts?category=">Plumbing</a><br>
-                                    <a href="/posts?category=">Electrical</a><br>
-                                    <a href="/posts?category=">Computer</a><br>
-                                    <a href="/posts?category=">Legal</a><br>
+                                    <a href="/posts?category=cleaning">Cleaning </a><br>
+                                    <a href="/posts?category=plumbing">Plumbing</a><br>
+                                    <a href="/posts?category=electrical">Electrical</a><br>
+                                    <a href="/posts?category=computer">Computer</a><br>
+                                    <a href="/posts?category=legal">Legal</a><br>
                                     </ul>
                                 </span>
                             </div>
-                            
+
                             <div class="col-md-2">
                                 <h4 class="">Jobs</h4>
                                 <span class="">
-                                    <a href="/posts?category=cars">Accounting</a><br>
-                                    <a href="/posts?category=">Education</a><br>
-                                    <a href="/posts?category=">Security</a><br>
-                                    <a href="/posts?category=">General Labor</a><br>
-                                    <a href="/posts?category=">Transport</a><br>
+                                    <a href="/posts?category=accounting">Accounting</a><br>
+                                    <a href="/posts?category=education">Education</a><br>
+                                    <a href="/posts?category=security">Security</a><br>
+                                    <a href="/posts?category=labor">General Labor</a><br>
+                                    <a href="/posts?category=transport">Transport</a><br>
                                     </ul>
                                 </span>
                             </div>
-                            
+
                             <div class="col-md-2">
                                 <h4 class="">Community</h4>
                                 <span class="">
-                                    <a href="/posts?category=cars">Art</a><br>
-                                    <a href="/posts?category=">Lost and Found</a><br>
-                                    <a href="/posts?category=">Groups</a><br>
-                                    <a href="/posts?category=">Classes</a><br>
-                                    <a href="/posts?category=">Pets</a><br>
+                                    <a href="/posts?category=art">Art</a><br>
+                                    <a href="/posts?category=lostandfound">Lost and Found</a><br>
+                                    <a href="/posts?category=groups">Groups</a><br>
+                                    <a href="/posts?category=classes">Classes</a><br>
+                                    <a href="/posts?category=pets">Pets</a><br>
                                     </ul>
                                 </span>
                             </div>

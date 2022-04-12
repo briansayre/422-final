@@ -1,37 +1,10 @@
-'''
-MIT License
-
-Copyright (c) 2019 Arshdeep Bahga and Vijay Madisetti
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-'''
-
 #!flask/bin/python
 from unicodedata import category
-from flask import Flask, jsonify, abort, request, make_response, url_for
+from flask import Flask, jsonify, request, make_response
 from flask import render_template, redirect, session
-import os
 import boto3
 import time
-import datetime
 from boto3.dynamodb.conditions import Key, Attr
-import json
 
 app = Flask(__name__)
 app.secret_key = 'whoop'
@@ -43,8 +16,6 @@ REGION = "us-east-1"
 dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY,
                           aws_secret_access_key=AWS_SECRET_KEY,
                           region_name=REGION)
-
-
 user_table = dynamodb.Table('Users')
 sale_table = dynamodb.Table('ForSale')
 housing_table = dynamodb.Table('Housing')
@@ -66,8 +37,7 @@ def not_found(error):
 @app.route('/', methods=['GET'])
 def index():
     if session.get("username"):
-        print(session.get("username"))
-        return render_template('index.html', username=session.get("username"))
+        return render_template('index.html', username=session.get("username").capitalize())
     return render_template('index.html', username="")
 
 
@@ -121,163 +91,130 @@ def logout():
     return redirect('/')
 
 
-# @app.route('/home', methods=['GET', 'POST'])
-# def home_page():
-#     response = table.scan(FilterExpression=Attr(
-#         'UserID').eq(session["user_id"]))
-#     items = response['Items']
-#     response2 = user_table.scan(
-#         FilterExpression=Key('userid').eq(str(session["user_id"]))
-#     )
-#     username = response2['Items'][0]['username']
-#     print(items)
-#     print("USERID: " + str(session['user_id']))
-#     return render_template('home.html', photos=items, name=username)
-
-
 @app.route('/add', methods=['GET', 'POST'])
-def add_photo():
-    if request.method == 'POST':
-        uploadedFileURL = ''
-
-        title = request.form['title']
-        description = request.form['description']
-        category = request.form['category']
-        ts = time.time()
-        item = {
-            "id": str(int(ts*1000)),
-            "title": title,
-            "description": description,
-            "category": category,
-            "userid": str(session['user_id'])
-        }
-        print(item)
-        sale = ["cars", "motorcycles", "boats", "books", "furniture"]
-        housing = ["house", "apartment", "condo", "hotel", "vacation"]
-        services = ["cleaning", "plumbing", "electrical", "computer", "legal"]
-        jobs = ["accounting", "education", "security", "labor", "transport"]
-        community = ["art", "lostandfound", "groups", "classes", "pets"]
-
-        if category in sale:
-            print("sale")
-            response = sale_table.scan(
-                FilterExpression=Attr('category').eq(str(category)))
-        elif category in housing:
-            print("housing")
-            response = housing_table.scan(
-                FilterExpression=Attr('category').eq(str(category)))
-        elif category in services:
-            print("services")
-            response = services_table.scan(
-                FilterExpression=Attr('category').eq(str(category)))
-        elif category in jobs:
-            print("jobs")
-            response = jobs_table.scan(
-                FilterExpression=Attr('category').eq(str(category)))
-        elif category in community:
-            print("community")
-            response = community_table.scan(
-                FilterExpression=Attr('category').eq(str(category)))
-        # table.put_item(
-        #     Item={
-        #         "PhotoID": str(int(ts*1000)),
-        #         "CreationTime": timestamp,
-        #         "Title": title,
-        #         "Description": description,
-        #         "Tags": tags,
-        #         "URL": uploadedFileURL,
-        #         "ExifData": json.dumps(ExifData),
-        #         "UserID": str(session['user_id'])
-        #     }
-        # )
-
-        return redirect('/')
+def add_post():
+    if session.get("user_id"):
+        if request.method == 'POST':
+            title = request.form['title']
+            description = request.form['description']
+            category = request.form['category']
+            location = request.form['location']
+            contact = request.form['contact']
+            price = request.form['price']
+            ts = time.time()
+            item = {
+                "id": str(int(ts*1000)),
+                "title": title,
+                "description": description,
+                "category": category,
+                "contact": contact,
+                "location": location,
+                "price": price,
+                "userid": str(session['user_id']),
+                "username": str(session['username'])
+            }
+            print(item)
+            sale = ["cars", "motorcycles", "boats", "books", "furniture"]
+            housing = ["house", "apartment", "condo", "hotel", "vacation"]
+            services = ["cleaning", "plumbing", "electrical", "computer", "legal"]
+            jobs = ["accounting", "education", "security", "labor", "transport"]
+            community = ["art", "lostandfound", "groups", "classes", "pets"]
+            if category in sale:
+                print("sale")
+                response = sale_table.put_item(Item=item)
+            elif category in housing:
+                print("housing")
+                response = housing_table.put_item(Item=item)
+            elif category in services:
+                print("services")
+                response = services_table.put_item(Item=item)
+            elif category in jobs:
+                print("jobs")
+                response = jobs_table.put_item(Item=item)
+            elif category in community:
+                print("community")
+                response = community_table.put_item(Item=item)
+            return redirect('/')
+        else:
+            return render_template('add.html')
     else:
-        return render_template('form.html')
+        return redirect("/")
 
 
 @app.route('/search', methods=['GET'])
-def search_page():
+def search_posts():
     query = request.args.get('query', None)
-
-    response = table.scan(
+    items = []
+    response = sale_table.scan(
         FilterExpression=(Attr('title').contains(str(query)) |
-                          Attr('description').contains(str(query)))
-    )
+                          Attr('description').contains(str(query))|
+                          Attr('contact').contains(str(query))|
+                          Attr('location').contains(str(query))))
+    if (response['Items']): items.extend(response['Items'])
+    response = housing_table.scan(
+        FilterExpression=(Attr('title').contains(str(query)) |
+                          Attr('description').contains(str(query))|
+                          Attr('contact').contains(str(query))|
+                          Attr('location').contains(str(query))))
+    if (response['Items']): items.extend(response['Items'])
+    response = services_table.scan(
+        FilterExpression=(Attr('title').contains(str(query)) |
+                          Attr('description').contains(str(query))|
+                          Attr('contact').contains(str(query))|
+                          Attr('location').contains(str(query))))
+    if (response['Items']): items.extend(response['Items'])
+    response = jobs_table.scan(
+        FilterExpression=(Attr('title').contains(str(query)) |
+                          Attr('description').contains(str(query))|
+                          Attr('contact').contains(str(query))|
+                          Attr('location').contains(str(query))))
+    if (response['Items']): items.extend(response['Items'])
+    response = community_table.scan(
+        FilterExpression=(Attr('title').contains(str(query)) |
+                          Attr('description').contains(str(query))|
+                          Attr('contact').contains(str(query))|
+                          Attr('location').contains(str(query))))
+    if (response['Items']): items.extend(response['Items'])
+    print(items)
+    return render_template('posts.html', posts=items, category="Search results for: " + query)
+
+
+@app.route('/posts', methods=['GET'])
+def view_posts():
+    category = request.args.get('category', None)
+    if (not category):
+        category = "null category"
+    sale = ["cars", "motorcycles", "boats", "books", "furniture"]
+    housing = ["house", "apartment", "condo", "hotel", "vacation"]
+    services = ["cleaning", "plumbing", "electrical", "computer", "legal"]
+    jobs = ["accounting", "education", "security", "labor", "transport"]
+    community = ["art", "lostandfound", "groups", "classes", "pets"]
+
+    if category in sale:
+        print("sale")
+        response = sale_table.scan(
+            FilterExpression=Attr('category').eq(str(category)))
+    elif category in housing:
+        print("housing")
+        response = housing_table.scan(
+            FilterExpression=Attr('category').eq(str(category)))
+    elif category in services:
+        print("services")
+        response = services_table.scan(
+            FilterExpression=Attr('category').eq(str(category)))
+    elif category in jobs:
+        print("jobs")
+        response = jobs_table.scan(
+            FilterExpression=Attr('category').eq(str(category)))
+    elif category in community:
+        print("community")
+        response = community_table.scan(
+            FilterExpression=Attr('category').eq(str(category)))
+    else:
+        response = {'Items': []}
     items = response['Items']
-    return render_template('search.html',
-                           photos=items, searchquery=query)
+    return render_template('posts.html', posts=items, category="Posts for " + category.capitalize())
 
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
-
-
-@app.route('/category', methods=['GET'])
-def view_category():
-    category = request.args.get('category', None)
-    sale = ["cars", "motorcycles", "boats", "books", "furniture"]
-    housing = ["house", "apartment", "condo", "hotel", "vacation"]
-    services = ["cleaning", "plumbing", "electrical", "computer", "legal"]
-    jobs = ["accounting", "education", "security", "labor", "transport"]
-    community = ["art", "lostandfound", "groups", "classes", "pets"]
-
-    if category in sale:
-        print("sale")
-        response = sale_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in housing:
-        print("housing")
-        response = housing_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in services:
-        print("services")
-        response = services_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in jobs:
-        print("jobs")
-        response = jobs_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in community:
-        print("community")
-        response = community_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    else:
-        response = {'Items': []}
-    items = response['Items']
-    return render_template('category.html', posts=items)
-
-
-@app.route('/post', methods=['GET'])
-def view_post():
-    category = request.args.get('id', None)
-    sale = ["cars", "motorcycles", "boats", "books", "furniture"]
-    housing = ["house", "apartment", "condo", "hotel", "vacation"]
-    services = ["cleaning", "plumbing", "electrical", "computer", "legal"]
-    jobs = ["accounting", "education", "security", "labor", "transport"]
-    community = ["art", "lostandfound", "groups", "classes", "pets"]
-
-    if category in sale:
-        print("sale")
-        response = sale_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in housing:
-        print("housing")
-        response = housing_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in services:
-        print("services")
-        response = services_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in jobs:
-        print("jobs")
-        response = jobs_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    elif category in community:
-        print("community")
-        response = community_table.scan(
-            FilterExpression=Attr('category').eq(str(category)))
-    else:
-        response = {'Items': []}
-    items = response['Items']
-    return render_template('category.html', posts=items)
