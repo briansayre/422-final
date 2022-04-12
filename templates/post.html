@@ -37,23 +37,19 @@
 
                     {% endif %}
 
-                    <h3>{{category}}</h3>
-
                 </center>
                 <div class="container">
                     <div class="row">
-                        {% for p in posts %}
                         <div class="col-md-12"
                             style="background-color: rgb(255, 255, 255); margin-bottom: 10px; padding: 10px; border: 1px solid rgb(216, 216, 216); border-radius: 3px;">
                             <h3 style="float: right;">{{p.price}}</h3>
-                            <h3><a href="/posts/{{p.id}}">{{p.title}}</a></h3>
+                            <h3>{{p.title}}</h3>
                             <p>Description: {{p.description}}</p>
                             <p>Category: {{p.category.capitalize()}}</p>
                             <p>Location: {{p.location}}</p>
                             <p>Contact: {{p.contact}}</p>
                             <p>Listed By: {{p.username}}</p>
                         </div>
-                        {% endfor %}
                     </div>
                 </div>
             </div>

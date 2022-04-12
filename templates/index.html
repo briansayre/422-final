@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>CyList</title>
+    <title>list(craigs)</title>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,700,500,300,300italic' rel='stylesheet'
         type='text/css'>
@@ -25,7 +25,7 @@
             <div class="container">
                 <br>
                 <center>
-                    <h2>CyList</h2>
+                    <h2>list(craigs)</h2>
                     {% if session["user_id"] %}
                     <h4> Hello, {{username}} </h4>
 
@@ -33,7 +33,7 @@
 
                     {% else %}
 
-                    <a href="/">Home</a> | <a href="/login">Login / Sign up</a> <br><br>
+                    <a href="/">Home</a> | <a href="/login">Login</a> <br><br>
 
                     {% endif %}
                     <!-- <a href="/">Home</a> | <a href="/add">Add Post</a> | <a href="/login">Login</a> | <a href="/logout">Logout</a><br><br> -->
@@ -51,7 +51,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-offset-1 col-md-2">
-                                <h4 class="">For Sale</h4>
+                                <h4 class=""><a href="/posts?section=sale">For Sale</a></h4>
                                 <span class="">
                                     <a href="/posts?category=cars">Cars</a><br>
                                     <a href="/posts?category=motorcycles">Motorcycles</a><br>
@@ -63,7 +63,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <h4 class="">Housing </h4>
+                                <h4 class=""><a href="/posts?section=housing">Housing</a></h4>
                                 <span class="">
                                     <a href="/posts?category=house">House</a><br>
                                     <a href="/posts?category=apartment">Apartment</a><br>
@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <h4 class="">Services </h4>
+                                <h4 class=""><a href="/posts?section=services">Services</a></h4>
                                 <span class="">
                                     <a href="/posts?category=cleaning">Cleaning </a><br>
                                     <a href="/posts?category=plumbing">Plumbing</a><br>
@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <h4 class="">Jobs</h4>
+                                <h4 class=""><a href="/posts?section=jobs">Jobs</a></h4>
                                 <span class="">
                                     <a href="/posts?category=accounting">Accounting</a><br>
                                     <a href="/posts?category=education">Education</a><br>
@@ -99,7 +99,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <h4 class="">Community</h4>
+                                <h4 class=""><a href="/posts?section=community">Community</a></h4>
                                 <span class="">
                                     <a href="/posts?category=art">Art</a><br>
                                     <a href="/posts?category=lostandfound">Lost and Found</a><br>
