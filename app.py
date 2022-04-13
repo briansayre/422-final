@@ -214,7 +214,44 @@ def view_post(id):
 def view_posts():
     category = request.args.get('category', None)
     section = request.args.get('section', None)
-    if not category and section:
+    userid = request.args.get('userid', None)
+
+    if userid:
+        items = []
+        response = user_table.scan(
+            FilterExpression=(Key('userid').eq(str(userid))))
+        print(response)
+        username = response['Items'][0]['username']
+
+        response = sale_table.scan(
+            FilterExpression=(Attr('userid').eq(str(userid))))
+        if (response['Items']):
+            items.extend(response['Items'])
+
+        response = housing_table.scan(
+            FilterExpression=(Attr('userid').eq(str(userid))))
+        if (response['Items']):
+            items.extend(response['Items'])
+
+        response = services_table.scan(
+            FilterExpression=(Attr('userid').eq(str(userid))))
+        if (response['Items']):
+            items.extend(response['Items'])
+
+        response = jobs_table.scan(
+            FilterExpression=(Attr('userid').eq(str(userid))))
+        if (response['Items']):
+            items.extend(response['Items'])
+
+        response = community_table.scan(
+            FilterExpression=(Attr('userid').eq(str(userid))))
+        if (response['Items']):
+            items.extend(response['Items'])
+
+        print(items)
+        return render_template('posts.html', posts=items, category="Posts for user " + username)
+
+    elif section:
         if section == "sale":
             response = sale_table.scan()
         elif section == "housing":
@@ -228,8 +265,9 @@ def view_posts():
         else:
             response = {'Items': []}
         return render_template('posts.html', posts=response['Items'], category="Posts for " + section.capitalize())
+
     elif category:
-        
+
         sale = ["cars", "motorcycles", "boats", "books", "furniture"]
         housing = ["house", "apartment", "condo", "hotel", "vacation"]
         services = ["cleaning", "plumbing", "electrical", "computer", "legal"]

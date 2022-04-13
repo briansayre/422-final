@@ -24,7 +24,8 @@
 
                 {% if session["user_id"] %}
 
-                <a href="/">Home</a> | <a href="/add">Add Post</a> | <a href="/logout">Logout</a><br><br>
+                <a href="/">Home</a> | <a href="/add">Add Post</a> | <a
+                    href="/posts?userid={{session['user_id']}}">Profile</a> | <a href="/logout">Logout</a><br><br>
 
                 {% else %}
 

@@ -122,6 +122,7 @@ def add_post(category):
         print("community")
         response = community_table.put_item(Item=item)
 
+
 def main():
     for c in range(25):
         for i in range(15):
