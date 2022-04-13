@@ -1,14 +1,6 @@
-from pydoc import describe
-from unicodedata import category
-from flask import Flask, jsonify, request, make_response
-from flask import render_template, redirect, session
 import boto3
 import random
 import names
-from boto3.dynamodb.conditions import Key, Attr
-
-app = Flask(__name__)
-app.secret_key = 'whoop'
 
 AWS_ACCESS_KEY = "AKIA2TPIYF2FIK7EZE6Z"
 AWS_SECRET_KEY = "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"
@@ -99,15 +91,15 @@ community_table = dynamodb.Table('Community')
 
 def add_post(category):
     item = {
-        "id": random_id(),
-        "title": random_title(),
-        "description": random_description(),
+        "id": str(random.randint(10000, 100000)),
+        "title": random.choice(title),
+        "description": random.choice(description),
         "category": category,
-        "contact": random_contact(),
+        "contact": str(random.randint(100, 999))+"-"+str(random.randint(100, 999))+"-"+str(random.randint(1000, 9999)),
         "location": "Ames, IA",
-        "price": random_price(),
-        "userid": random_id(),
-        "username": random_username()
+        "price": "$"+str(random.randint(0, 10000)),
+        "userid": str(random.randint(10000, 100000)),
+        "username": names.get_full_name()
     }
     sale = ["cars", "motorcycles", "boats", "books", "furniture"]
     housing = ["house", "apartment", "condo", "hotel", "vacation"]
@@ -129,24 +121,6 @@ def add_post(category):
     elif category in community:
         print("community")
         response = community_table.put_item(Item=item)
-
-def random_id():
-    return str(random.randint(10000, 100000))
-
-def random_title():
-    return random.choice(title)
-
-def random_description():
-    return random.choice(description)
-    
-def random_contact():
-    return str(random.randint(100, 999))+"-"+str(random.randint(100, 999))+"-"+str(random.randint(1000, 9999))
-
-def random_price():
-    return str(random.randint(0, 10000))
-
-def random_username():
-    return names.get_full_name()
 
 def main():
     for c in range(25):
