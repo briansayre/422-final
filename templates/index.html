@@ -27,10 +27,11 @@
                 <center>
                     <h2>list(craigs)</h2>
                     {% if session["user_id"] %}
-                    <h4> Hello, {{username}} </h4>
 
                     <a href="/">Home</a> | <a href="/add">Add Post</a> | <a
                         href="/posts?userid={{session['user_id']}}">Profile</a> | <a href="/logout">Logout</a><br><br>
+
+                    <h3> Hello, {{username}} </h3>
 
                     {% else %}
 

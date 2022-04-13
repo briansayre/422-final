@@ -45,14 +45,24 @@
                     <div class="row">
                         {% for p in posts %}
                         <div class="col-md-12"
-                            style="background-color: rgb(255, 255, 255); margin-bottom: 10px; padding: 10px; border: 1px solid rgb(216, 216, 216); border-radius: 3px;">
-                            <h3 style="float: right;">{{p.price}}</h3>
-                            <h3><a href="/posts/{{p.id}}">{{p.title}}</a></h3>
-                            <p>Description: {{p.description}}</p>
-                            <p>Category: {{p.category.capitalize()}}</p>
-                            <p>Location: {{p.location}}</p>
-                            <p>Contact: {{p.contact}}</p>
-                            <p>Listed By: {{p.username}}</p>
+                            style="background-color: rgb(255, 255, 255); margin-bottom: 10px; padding: 20px; border: 1px solid rgb(216, 216, 216); border-radius: 3px;">
+                            <h3 style="float: right;"><i>{{p.price}}</i></h3>
+                            <h3><a href="/posts?id={{p.id}}"><b>{{p.title}}</b></a></h3>
+                            <p><b>Description:</b> {{p.description}}</p>
+                            <p><b>Category:</b> {{p.category.capitalize()}}</p>
+                            <p><b>Location:</b> {{p.location}}</p>
+                            <p><b>Contact:</b> {{p.contact}}</p>
+                            <p><b>Listed By:</b> {{p.username}}</p>
+
+                            {% if session.get("user_id") == p.userid %}
+
+                            <form method='post' action="/delete?id={{p.id}}&category={{p.category}}">
+                                <button type="submit" class="btn-red-bg btn-base-sm radius-3">
+                                    Delete
+                                </button>
+                            </form>
+
+                            {% endif %}
                         </div>
                         {% endfor %}
                     </div>

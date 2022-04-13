@@ -78,6 +78,15 @@ description = [
 
 ]
 
+cities = [
+    "Ames, IA",
+    "Ames, IA",
+    "Ames, IA",
+    "Des Moines, IA",
+    "Boone, IA",
+    "West Des Moines, IA"
+]
+
 dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY,
                           aws_secret_access_key=AWS_SECRET_KEY,
                           region_name=REGION)
@@ -96,7 +105,7 @@ def add_post(category):
         "description": random.choice(description),
         "category": category,
         "contact": str(random.randint(100, 999))+"-"+str(random.randint(100, 999))+"-"+str(random.randint(1000, 9999)),
-        "location": "Ames, IA",
+        "location": random.choice(cities),
         "price": "$"+str(random.randint(0, 10000)),
         "userid": str(random.randint(10000, 100000)),
         "username": names.get_full_name()
@@ -108,19 +117,19 @@ def add_post(category):
     community = ["art", "lostandfound", "groups", "classes", "pets"]
     if category in sale:
         print("sale")
-        response = sale_table.put_item(Item=item)
+        sale_table.put_item(Item=item)
     elif category in housing:
         print("housing")
-        response = housing_table.put_item(Item=item)
+        housing_table.put_item(Item=item)
     elif category in services:
         print("services")
-        response = services_table.put_item(Item=item)
+        services_table.put_item(Item=item)
     elif category in jobs:
         print("jobs")
-        response = jobs_table.put_item(Item=item)
+        jobs_table.put_item(Item=item)
     elif category in community:
         print("community")
-        response = community_table.put_item(Item=item)
+        community_table.put_item(Item=item)
 
 
 def main():
