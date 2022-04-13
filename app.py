@@ -1,6 +1,4 @@
 #!flask/bin/python
-from collections import UserString
-from unicodedata import category
 from flask import Flask, jsonify, request, make_response
 from flask import render_template, redirect, session
 import boto3
