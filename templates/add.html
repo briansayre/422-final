@@ -10,30 +10,59 @@
         type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic' rel='stylesheet'
         type='text/css'>
-    <link href="static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="static/css/global.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="static/plugins/jquery.min.js"></script>
+    <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/plugins/et-line/et-line.css" rel="stylesheet" type="text/css" />
+    <link href="/static/plugins/themify/themify.css" rel="stylesheet" type="text/css" />
+    <link href="/static/plugins/cubeportfolio/css/cubeportfolio.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/global.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/static/plugins/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="wrapper">
-        <div class="bg-color-sky-light">
-            <br>
-            <center>
-                <h2>list(craigs)</h2>
+        <div class="">
+            
+            <nav class="navbar navbar-default">
+                <div class="container">
 
-                {% if session["user_id"] %}
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/">list(craig)</a>
+                    </div>
 
-                <a href="/">Home</a> | <a href="/add">Add Post</a> | <a
-                    href="/posts?userid={{session['user_id']}}">Profile</a> | <a href="/logout">Logout</a><br><br>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            {% if session["user_id"] %}
+                            <!-- <li><p class="navbar-text">Hello, {{username}}</p></li> -->
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/add">Add Post</a> </li>
+                            <li><a href="/posts?userid={{session['user_id']}}">Profile</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                            
+                            {% else %}
 
-                {% else %}
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/login">Login</a></li>
 
-                <a href="/">Home</a> | <a href="/login">Login</a> <br><br>
+                            {% endif %}
+                        </ul>
+                        <form class="navbar-form navbar-right" method='get' action="/search">
+                            <div class="form-group">
+                                <input type="text" name="query" id="query" class="form-control" placeholder="Search">
+                            </div>
+                            <!-- <button type="submit" class="btn btn-default">Submit</button> -->
+                        </form>
+                    </div>
+                </div>
+            </nav>
 
-                {% endif %}
-
-            </center>
             <div class="content-sm container">
                 <div class="row">
                     <div class="col-md-12">
@@ -57,29 +86,41 @@
                                         placeholder="Description" required></textarea>
                                     <br>
                                     <select id="category" name="category" required>
-                                        <option value="cars">Cars</option>
-                                        <option value="motorcycles">Motorcycles</option>
-                                        <option value="boats">Boats</option>
-                                        <option value="books">Books</option>
-                                        <option value="furniture">Furniture</option>
-                                        <option value="house">House</option>
-                                        <option value="apartment">Apartment</option>
-                                        <option value="condo">Condo</option>
-                                        <option value="vacation">Vacation Rental</option>
-                                        <option value="cleaning">Cleaning</option>
-                                        <option value="plumbing">Plumbing</option>
-                                        <option value="electrical">Electrical</option>
-                                        <option value="computer">Computer</option>
-                                        <option value="legal">Legal</option>
-                                        <option value="accounting">Accounting</option>
-                                        <option value="education">Education</option>
-                                        <option value="security">Security</option>
-                                        <option value="labor">General Labor</option>
-                                        <option value="transport">Transport</option>
-                                        <option value="lostandfound">Lost and Found</option>
-                                        <option value="groups">Groups</option>
-                                        <option value="classes">Classes</option>
-                                        <option value="pets">Pets</option>
+                                        <optgroup label="For Sale">
+                                            <option value="cars">Cars</option>
+                                            <option value="motorcycles">Motorcycles</option>
+                                            <option value="boats">Boats</option>
+                                            <option value="books">Books</option>
+                                            <option value="furniture">Furniture</option>
+                                        </optgroup>
+                                        <optgroup label="Housing">
+                                            <option value="house">House</option>
+                                            <option value="apartment">Apartment</option>
+                                            <option value="condo">Condo</option>
+                                            <option value="vacation">Vacation Rental</option>
+                                            <option value="hotel">Hotel</option>
+                                        </optgroup>
+                                        <optgroup label="Services">
+                                            <option value="cleaning">Cleaning</option>
+                                            <option value="plumbing">Plumbing</option>
+                                            <option value="electrical">Electrical</option>
+                                            <option value="computer">Computer</option>
+                                            <option value="legal">Legal</option>
+                                        </optgroup>
+                                        <optgroup label="Jobs">
+                                            <option value="accounting">Accounting</option>
+                                            <option value="education">Education</option>
+                                            <option value="security">Security</option>
+                                            <option value="labor">General Labor</option>
+                                            <option value="transport">Transport</option>
+                                        </optgroup>
+                                        <optgroup label="Community">
+                                            <option value="art">Art</option>
+                                            <option value="lostandfound">Lost and Found</option>
+                                            <option value="groups">Groups</option>
+                                            <option value="classes">Classes</option>
+                                            <option value="pets">Pets</option>
+                                        </optgroup>
                                     </select>
                                     <br>
                                     <br>
